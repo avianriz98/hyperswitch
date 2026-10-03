@@ -277,6 +277,7 @@ impl ConnectorData {
                 enums::Connector::Flexiti => {
                     Ok(ConnectorEnum::Old(Box::new(connector::Flexiti::new())))
                 }
+                enums::Connector::Flip => Ok(ConnectorEnum::Old(Box::new(connector::Flip::new()))),
                 enums::Connector::Forte => {
                     Ok(ConnectorEnum::Old(Box::new(connector::Forte::new())))
                 }

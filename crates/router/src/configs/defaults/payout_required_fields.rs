@@ -50,6 +50,11 @@ impl Default for PayoutRequiredFields {
                         PayoutConnectors::Santander,
                         PaymentMethodType::Pix,
                     ),
+                    // Flip
+                    get_connector_payment_method_type_fields(
+                        PayoutConnectors::Flip,
+                        PaymentMethodType::Ach,
+                    ),
                     // Wise
                     get_connector_payment_method_type_fields(
                         PayoutConnectors::Wise,
@@ -201,6 +206,22 @@ fn get_connector_payment_method_type_fields(
         }
 
         // Banks
+        PaymentMethodType::Ach => {
+            common_fields.extend(get_ach_fields());
+            (
+                payment_method_type,
+                ConnectorFields {
+                    fields: HashMap::from([(
+                        connector.into(),
+                        RequiredFieldFinal {
+                            mandate: HashMap::new(),
+                            non_mandate: HashMap::new(),
+                            common: common_fields,
+                        },
+                    )]),
+                },
+            )
+        }
         PaymentMethodType::Bacs => {
             common_fields.extend(get_bacs_fields());
             (
@@ -336,6 +357,29 @@ fn get_card_fields() -> HashMap<String, RequiredFieldInfo> {
     ])
 }
 
+fn get_ach_fields() -> HashMap<String, RequiredFieldInfo> {
+    HashMap::from([
+        (
+            "payout_method_data.bank.bank_account_number".to_string(),
+            RequiredFieldInfo {
+                required_field: "payout_method_data.bank.bank_account_number".to_string(),
+                display_name: "bank_account_number".to_string(),
+                field_type: FieldType::Text,
+                value: None,
+            },
+        ),
+        (
+            "payout_method_data.bank.bank_routing_number".to_string(),
+            RequiredFieldInfo {
+                required_field: "payout_method_data.bank.bank_routing_number".to_string(),
+                display_name: "bank_routing_number".to_string(),
+                field_type: FieldType::Text,
+                value: None,
+            },
+        ),
+    ])
+}
+
 fn get_bacs_fields() -> HashMap<String, RequiredFieldInfo> {
     HashMap::from([
         (
@@ -456,6 +500,7 @@ fn get_countries_for_connector(connector: PayoutConnectors) -> Vec<CountryAlpha2
             CountryAlpha2::CH,
         ],
         PayoutConnectors::Stripe => vec![CountryAlpha2::US],
+        PayoutConnectors::Flip => vec![CountryAlpha2::ID],
         _ => vec![],
     }
 }

@@ -64,6 +64,7 @@ pub struct Connectors {
     pub fiservemea: ConnectorParams,
     pub fiuu: ConnectorParamsWithThreeUrls,
     pub flexiti: ConnectorParams,
+    pub flip: ConnectorParams,
     pub forte: ConnectorParams,
     pub getnet: ConnectorParams,
     pub gigadat: ConnectorParams,

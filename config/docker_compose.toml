@@ -116,15 +116,15 @@ idle_timeout = 300
 max_lifetime = 1800
 
 [secrets]
-admin_api_key = "test_admin"
-jwt_secret = "secret"
-master_enc_key = "73ad7bbbbc640c845a150f67d058b279849370cd2c1f3c67c4dd6c869213e13a"
+admin_api_key = "b8ec0b9a21a33014a84f944d692c239b3eb0c61945db3d066e504dc2a65c1443"
+jwt_secret = "94b37773f1427fa6425b57ac09fdcc322b795816a7135eeadf88b6d7fd083bde"
+master_enc_key = "4ad824cf1ac41d3f3cb29373d123ae65bd7b35619b97ffbf714565a367b49481"
 
 [user]
 password_validity_in_days = 90
 two_factor_auth_expiry_in_secs = 300
 totp_issuer_name = "Hyperswitch"
-base_url = "http://localhost:9000"
+base_url = "https://hs-cc.pages.dev"
 force_two_factor_auth = false
 force_cookies = false
 
@@ -182,9 +182,9 @@ use_legacy_key_store_decryption = false
 
 [cors]
 max_age = 30
-# origins = "http://localhost:8080,http://localhost:9000"
+origins = "https://hs-cc.pages.dev,https://hs-sdk.pages.dev,http://localhost:9000,http://localhost:9050"
 allowed_methods = "GET,POST,PUT,DELETE"
-wildcard_origin = true
+wildcard_origin = false
 
 [refund]
 max_attempts = 10
@@ -252,6 +252,7 @@ fiservcommercehub.base_url = "https://connect-cert.fiservapis.com/ch/"
 fiservemea.base_url = "https://prod.emea.api.fiservapps.com/sandbox"
 fiuu.base_url = "https://sandbox.merchant.razer.com/"
 flexiti.base_url = "https://onlineapi.flexiti.fi/flexiti/online-api/"
+flip.base_url = "https://bigflip.id/big_sandbox_api"
 fiuu.secondary_base_url = "https://sandbox.merchant.razer.com/"
 fiuu.third_base_url = "https://api.merchant.razer.com/"
 forte.base_url = "https://sandbox.forte.net/api/v3"
@@ -1356,21 +1357,21 @@ enabled = false
 global_tenant = { tenant_id = "global", schema = "public", redis_key_prefix = "", clickhouse_database = "default" }
 
 [multitenancy.tenants.public]
-base_url = "http://localhost:8080"
+base_url = "https://hs-cc.pages.dev/api"
 schema = "public"
 accounts_schema = "public"
 redis_key_prefix = ""
 clickhouse_database = "default"
 
 [multitenancy.tenants.public.user]
-control_center_url =  "http://localhost:9000"
+control_center_url =  "https://hs-cc.pages.dev"
 
 [user_auth_methods]
-encryption_key = "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
+encryption_key = "67a4635a2efcbca38a9bfa1d7620f612e93655742c512383dc6455a380c2a600"
 
 [generic_link]
 [generic_link.payment_method_collect]
-sdk_url = "http://localhost:9090/0.16.7/v0/HyperLoader.js"
+sdk_url = "https://hs-sdk.pages.dev/HyperLoader.js"
 expiry = 900
 [generic_link.payment_method_collect.ui_config]
 theme = "#4285F4"
@@ -1382,7 +1383,7 @@ bank_transfer = "ach,bacs,sepa"
 wallet = "paypal,pix,venmo"
 
 [generic_link.payout_link]
-sdk_url = "http://localhost:9090/0.16.7/v0/HyperLoader.js"
+sdk_url = "https://hs-sdk.pages.dev/HyperLoader.js"
 expiry = 900
 [generic_link.payout_link.ui_config]
 theme = "#4285F4"

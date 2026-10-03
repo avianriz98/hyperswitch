@@ -273,6 +273,10 @@ impl ConnectorAuthTypeAndMetadataValidation<'_> {
                 flexiti::transformers::FlexitiAuthType::try_from(self.auth_type)?;
                 Ok(())
             }
+            api_enums::Connector::Flip => {
+                flip::transformers::FlipAuthType::try_from(self.auth_type)?;
+                Ok(())
+            }
             api_enums::Connector::Forte => {
                 forte::transformers::ForteAuthType::try_from(self.auth_type)?;
                 Ok(())

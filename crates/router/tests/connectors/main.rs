@@ -52,6 +52,7 @@ mod fiservcommercehub;
 mod fiservemea;
 mod fiuu;
 mod flexiti;
+mod flip;
 mod forte;
 mod getnet;
 mod gigadat;

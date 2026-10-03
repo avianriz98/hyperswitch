@@ -1,0 +1,8 @@
+# Minimal diesel config for the one-click docker migration runner.
+# Intentionally omits [print_schema] so `diesel migration run` does NOT try to
+# regenerate crates/diesel_models/src/schema.rs or apply drop_id.patch inside
+# the container (that patch currently fails with "error applying hunk #5"
+# because the checked-in schema has drifted from the patch's context).
+
+[migrations_directory]
+dir = "migrations"

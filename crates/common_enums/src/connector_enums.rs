@@ -114,6 +114,7 @@ pub enum Connector {
     Fiservcommercehub,
     Fiuu,
     Flexiti,
+    Flip,
     Forte,
     Getnet,
     Gigadat,
@@ -248,6 +249,10 @@ impl Connector {
     ) -> bool {
         if matches!(self, Self::Trustly) {
             !is_passthrough
+        } else if matches!(self, Self::Flip) {
+            // Flip disburses directly; recipient details are validated through
+            // its bank-account inquiry during payout creation.
+            false
         } else {
             matches!(payout_method, Some(PayoutType::Bank))
         }
@@ -381,6 +386,7 @@ impl Connector {
             | Self::Fiservemea
             | Self::Fiuu
             | Self::Flexiti
+            | Self::Flip
             | Self::Forte
             | Self::Getnet
             | Self::Gigadat

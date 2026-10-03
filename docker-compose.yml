@@ -63,11 +63,8 @@ services:
       bash -c "
       apt-get update && apt-get install -y curl xz-utils &&
       curl --proto '=https' --tlsv1.2 -LsSf https://github.com/diesel-rs/diesel/releases/download/v2.3.5/diesel_cli-installer.sh | bash &&
-      if ! command -v just >/dev/null 2>&1; then
-        curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
-      fi &&
       export PATH="$${PATH}:$${HOME}/.cargo/bin" &&
-      just migrate"
+      diesel migration --database-url "$${DATABASE_URL}" run --migration-dir migrations --config-file diesel.docker.toml"
     working_dir: /app
     networks:
       - router_net
@@ -105,7 +102,7 @@ services:
       - SEED_FILE=/seed.toml
       - WORKSPACE_ID=dev
       - ORG_ID=localorg
-    command: sh -c "apk add --no-cache curl jq yq && sh /seed_superposition.sh"
+    command: sh -c "apk add --no-cache curl jq yq bash && bash /seed_superposition.sh"
     restart: "no"
 
   mailhog:
@@ -541,5 +538,32 @@ services:
       - PROFILE_ID=placeholder_profile_id
       - HYPERSWITCH_CLIENT_URL=http://localhost:9050
       - HYPERSWITCH_SERVER_URL=http://localhost:8080
+    labels:
+      logs: "promtail"
+
+  # Pool wallet: accumulates collected funds per merchant/currency in a
+  # ledgered pool and disburses through Hyperswitch payout connectors
+  # (Flip for Indonesian bank accounts by default).
+  pool-wallet:
+    build:
+      context: ./pool_wallet
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    networks:
+      - router_net
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://db_user:db_pass@pg:5432/pool_wallet
+      - POOL_WALLET_CREATE_DB=1
+      - POOL_WALLET_API_KEY=pool_wallet_api_key
+      - HYPERSWITCH_BASE_URL=http://hyperswitch-server:8080
+      - HYPERSWITCH_API_KEY=test_admin
+      - POOL_WALLET_AUTO_SETTLE=false
+      - DEFAULT_PAYOUT_CONNECTOR=flip
+    depends_on:
+      pg:
+        condition: service_healthy
+      hyperswitch-server:
+        condition: service_healthy
     labels:
       logs: "promtail"

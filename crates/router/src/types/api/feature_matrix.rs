@@ -188,6 +188,7 @@ impl FeatureMatrixConnectorData {
                     connector::Fiservcommercehub::new(),
                 ))),
                 enums::Connector::Fiuu => Ok(ConnectorEnum::Old(Box::new(connector::Fiuu::new()))),
+                enums::Connector::Flip => Ok(ConnectorEnum::Old(Box::new(connector::Flip::new()))),
                 enums::Connector::Forte => {
                     Ok(ConnectorEnum::Old(Box::new(connector::Forte::new())))
                 }
